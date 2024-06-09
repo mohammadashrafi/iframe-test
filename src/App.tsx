@@ -4,7 +4,18 @@ import './App.css'
 function App() {
 const myref=useRef<HTMLIFrameElement>(null)
 const handelClick=()=>{
-  myref.current.contentWindow.postMessage('8erEGs0Th0cPC4zKKgi26zoCtABhGHy08eUCISYGEgk', 'https://next-auth-session.vercel.app')
+  if (myref.current) {
+    if (myref.current.contentWindow) {
+      myref.current.contentWindow.postMessage(
+        '8erEGs0Th0cPC4zKKgi26zoCtABhGHy08eUCISYGEgk',
+        'https://next-auth-session.vercel.app'
+      );
+    } else {
+      console.error('myref.current.contentWindow is null');
+    }
+  } else {
+    console.error('myref.current is null');
+  }
 }
 
   return (
