@@ -13,7 +13,7 @@ const ParentComponent = () => {
     const iframe:any = iframeRef.current;
     if (iframe) {
       iframe.onload = () => {
-        iframe.contentWindow.postMessage('Hello from parent', 'https://next-auth-session.vercel.app/');
+        iframe.contentWindow.postMessage('fg4hf5g4h5f4gh564f6g54hd6f54g56df4g654', 'https://next-auth-session.vercel.app/');
       };
     }
 
