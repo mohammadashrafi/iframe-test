@@ -29,7 +29,7 @@ const ParentComponent = () => {
         ref={iframeRef}
         src="https://next-auth-session.vercel.app/"
         title="Communication Iframe"
-        style={{ width: '600px', height: '400px', border: 'none' }}
+        style={{ width: '600px', height: '400px', border: '5px solid red' }}
       ></iframe>
     </div>
   );
