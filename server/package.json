@@ -1,0 +1,19 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dns": "^0.2.2",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "speed-test": "^3.0.0",
+    "uuid": "^10.0.0"
+  }
+}

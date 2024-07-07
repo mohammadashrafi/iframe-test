@@ -1,59 +1,93 @@
-// import { useRef } from 'react'
-import './App.css'
-// import CryptoJS from "crypto-js"
-import ParentComponent from "./components/postMessage"
+import { useRef } from "react";
+import "./App.css";
+import SpeedTests from "./components/CloudflareSpeedTest";
+
 function App() {
-// const myref=useRef<HTMLIFrameElement>(null)
-// const handelClick=()=>{
-//   if (myref.current) {
-//     if (myref.current.contentWindow) {
-//       myref.current.contentWindow.postMessage(
-//         '8erEGs0Th0cPC4zKKgi26zoCtABhGHy08eUCISYGEgk',
-//         'https://next-auth-session.vercel.app'
-//       );
-//     } else {
-//       console.error('myref.current.contentWindow is null');
-//     }
-//   } else {
-//     console.error('myref.current is null');
-//   }
-// }
+  const fileInput = useRef<any>(null);
 
-// const obj={
-//   name:"mohammad",lastname:"ashrafi",age:30
-// }
-// const secretkey="df5g4df564654d56fg54"
+  async function measurePing() {
+    const startTime = performance.now();
+    const response = await fetch("http://localhost:6005/ping-endpoint");
+    const endTime = performance.now();
+    const duration = endTime - startTime;
+    console.log(`Approximate ping time: ${duration / 1000} milliseconds.`);
+    return response;
+  }
 
-// const encryptFormData = (data:string | object, key:string) => {
-//   const jsonString = JSON.stringify(data);
-//   const encryptedString:string = CryptoJS.AES.encrypt(jsonString, key).toString();
-//   return encryptedString;
-// };
+  async function testUploadSpeed() {
+    const startTime = performance.now();
+    const formData = new FormData();
+    formData.append("image", fileInput.current?.files[0]); // Assuming fileInput is a File input element
+    const response = await fetch("http://localhost:6005/upload-speed-test", {
+      method: "POST",
+      body: formData,
+    });
+    const endTime = performance.now();
+    const duration = endTime - startTime;
+    const data = await response.json();
+    console.log(
+      `Upload speed test took ${duration / 1000} milliseconds.`,
+      data.timeTaken
+    );
+    return data;
+  }
 
+  async function testDownloadSpeed() {
+    const startTime = performance.now();
+    const response = await fetch("http://localhost:6005/download-speed-test");
+    console.log("testDownloadSpeed responce", response);
+    const endTime = performance.now();
+    const duration = endTime - startTime;
+    console.log(`Download speed test took ${duration / 1000} milliseconds.`);
+    return response;
+  }
 
-// const decryptFormData = (encryptedString:string, key:string) => {
-//   const bytes = CryptoJS.AES.decrypt(encryptedString, key);
-//   const decryptedString = bytes.toString(CryptoJS.enc.Utf8);
-//   return JSON.parse(decryptedString);
-// };
+  async function handeltest() {
+    // const allDate=await Promise.allSettled([testUploadSpeed(),measurePing(),testDownloadSpeed()])
 
+    try {
+      const pingArr = [1, 2, 3];
 
+      const n = 100; // Number of elements
+      const arr = [];
+      for (let i = 0; i < n; i++) {
+        arr.push(i + 1);
+      }
+      // const countPost = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+      const getPing = await pingArr.forEach(() => measurePing());
+      console.log({ getPing });
 
-// const handelCript =async()=>{
-//   const encryptForm= await encryptFormData(obj,secretkey)
-//   const decript=await decryptFormData(encryptForm,secretkey)
+      const getupload = await pingArr.forEach(() => testUploadSpeed());
+      console.log({ getupload });
 
-//   console.log("encryptFormData",encryptForm)
-//   console.log("decript",decript)
-// }
+      const getdownload = await arr.forEach(() => testDownloadSpeed());
+      console.log({ getdownload });
 
-
+      // const pingTest = await measurePing();
+      // const uploadTest = await testUploadSpeed();
+      // const downloadTest = await testDownloadSpeed();
+      // console.log({ pingTest, uploadTest, downloadTest });
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
 
   return (
     <>
-  <ParentComponent/>
-     {/* <iframe ref={myref} src="https://next-auth-session.vercel.app" sandbox="allow-storage-access-by-user-activation
+    <SpeedTests/>
+      {/* <input type="file" name="file" ref={fileInput} />
+
+      <button className="bg-red-700 p-5 text-white" onClick={handeltest}>
+        analize
+      </button> */}
+      {/* <NetworkPingMonitor/> */}
+
+      {/* <InternetMeter /> */}
+
+      {/* <ParentComponent/>
+  <button onClick={handelCript} className="bg-purple-500 p-4 mt-3 text-white">crp</button> */}
+      {/* <iframe ref={myref} src="https://next-auth-session.vercel.app" sandbox="allow-storage-access-by-user-activation
                  allow-scripts
                  allow-same-origin" width={"80%"} height={"400px"} title="Iframe Example" className='m-auto border border-6 border-red-950 '></iframe>
      <button onClick={handelClick} className='bg-red-500 p-3 mt-4 rounded-md text-white'>click</button>
@@ -61,7 +95,7 @@ function App() {
      <a className='bg-green-500 block w-[100px] mx-auto p-3 mt-4 rounded-md text-white' href="https://next-auth-session.vercel.app/redirect">redirect</a>
      <button onClick={handelCript} className="bg-purple-500 p-4 mt-3 text-white">crp</button> */}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
